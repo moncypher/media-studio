@@ -1359,6 +1359,9 @@ public:
 	void SaveService();
 	bool LoadService();
 
+signals:
+	void StreamServiceChanged();
+
 	/* -------------------------------------
 	 * MARK: - OBSBasic_StatusBar
 	 * -------------------------------------

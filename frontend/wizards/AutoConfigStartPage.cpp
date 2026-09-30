@@ -29,7 +29,7 @@ AutoConfigStartPage::~AutoConfigStartPage() {}
 
 int AutoConfigStartPage::nextId() const
 {
-	return wiz->type == AutoConfig::Type::VirtualCam ? AutoConfig::TestPage : AutoConfig::VideoPage;
+	return AutoConfig::SourcePage;
 }
 
 void AutoConfigStartPage::on_prioritizeStreaming_clicked()

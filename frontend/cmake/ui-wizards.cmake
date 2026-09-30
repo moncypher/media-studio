@@ -3,6 +3,8 @@ target_sources(
   PRIVATE
     wizards/AutoConfig.cpp
     wizards/AutoConfig.hpp
+    wizards/AutoConfigSourcePage.cpp
+    wizards/AutoConfigSourcePage.hpp
     wizards/AutoConfigStartPage.cpp
     wizards/AutoConfigStartPage.hpp
     wizards/AutoConfigStreamPage.cpp

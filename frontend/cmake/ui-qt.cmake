@@ -27,6 +27,7 @@ target_sources(
   obs-studio
   PRIVATE
     forms/AutoConfigFinishPage.ui
+    forms/AutoConfigSourcePage.ui
     forms/AutoConfigStartPage.ui
     forms/AutoConfigStartPage.ui
     forms/AutoConfigStreamPage.ui

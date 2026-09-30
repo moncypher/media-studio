@@ -8,6 +8,7 @@ class AutoConfig : public QWizard {
 	Q_OBJECT
 
 	friend class AutoConfigStartPage;
+	friend class AutoConfigSourcePage;
 	friend class AutoConfigVideoPage;
 	friend class AutoConfigStreamPage;
 	friend class AutoConfigTestPage;
@@ -103,6 +104,11 @@ class AutoConfig : public QWizard {
 	int specificFPSNum = 0;
 	int specificFPSDen = 0;
 
+	bool addDisplayCaptureSource = false;
+	std::string displayCaptureSourceId;
+	int displayCaptureMonitorIdx = 0;
+	std::string displayCaptureMonitorName;
+
 	void TestHardwareEncoding();
 	bool CanTestServer(const char *server);
 
@@ -110,6 +116,7 @@ class AutoConfig : public QWizard {
 
 	void SaveStreamSettings();
 	void SaveSettings();
+	void AddDisplayCaptureSource();
 
 public:
 	AutoConfig(QWidget *parent);
@@ -117,6 +124,7 @@ public:
 
 	enum Page {
 		StartPage,
+		SourcePage,
 		VideoPage,
 		StreamPage,
 		TestPage,

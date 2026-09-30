@@ -1380,6 +1380,19 @@ QDoubleSpinBox::down-arrow {
     margin: var(--spacing_base) var(--spacing_small);
 }
 
+#streamKeyRow {
+    margin: var(--spacing_base) var(--spacing_small);
+}
+
+#controlsFrame #streamKeyRow QPushButton {
+    margin: 0px;
+    padding: var(--padding_base) var(--padding_wide);
+}
+
+#streamKeyLabel {
+    color: var(--text);
+}
+
 #streamButton,
 #recordButton,
 #replayBufferButton,

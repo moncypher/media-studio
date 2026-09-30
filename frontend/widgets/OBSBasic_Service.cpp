@@ -99,6 +99,7 @@ bool OBSBasic::InitService()
 	ProfileScope("OBSBasic::InitService");
 
 	if (LoadService()) {
+		emit StreamServiceChanged();
 		return true;
 	}
 
@@ -108,6 +109,7 @@ bool OBSBasic::InitService()
 	}
 	obs_service_release(service);
 
+	emit StreamServiceChanged();
 	return true;
 }
 
@@ -124,5 +126,6 @@ void OBSBasic::SetService(obs_service_t *newService)
 {
 	if (newService) {
 		service = newService;
+		emit StreamServiceChanged();
 	}
 }

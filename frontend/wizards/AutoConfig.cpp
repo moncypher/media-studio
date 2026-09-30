@@ -1,4 +1,5 @@
 #include "AutoConfig.hpp"
+#include "AutoConfigSourcePage.hpp"
 #include "AutoConfigStartPage.hpp"
 #include "AutoConfigStreamPage.hpp"
 #include "AutoConfigTestPage.hpp"
@@ -79,6 +80,7 @@ AutoConfig::AutoConfig(QWidget *parent) : QWizard(parent)
 	streamPage = new AutoConfigStreamPage();
 
 	setPage(StartPage, new AutoConfigStartPage());
+	setPage(SourcePage, new AutoConfigSourcePage());
 	setPage(VideoPage, new AutoConfigVideoPage());
 	setPage(StreamPage, streamPage);
 	setPage(TestPage, new AutoConfigTestPage());
@@ -266,6 +268,7 @@ void AutoConfig::done(int result)
 			SaveStreamSettings();
 		}
 		SaveSettings();
+		AddDisplayCaptureSource();
 
 #ifdef YOUTUBE_ENABLED
 		if (YouTubeAppDock::IsYTServiceSelected()) {
@@ -385,4 +388,88 @@ void AutoConfig::SaveSettings()
 	main->ResetVideo();
 	main->ResetOutputs();
 	config_save_safe(main->Config(), "tmp", nullptr);
+}
+
+namespace {
+struct AddDisplayCaptureData {
+	obs_source_t *source;
+	obs_sceneitem_t *sceneItem = nullptr;
+};
+
+void AddDisplayCaptureSceneItem(void *param, obs_scene_t *scene)
+{
+	AddDisplayCaptureData *data = static_cast<AddDisplayCaptureData *>(param);
+	data->sceneItem = obs_scene_add(scene, data->source);
+	obs_sceneitem_set_visible(data->sceneItem, true);
+}
+
+std::string GetUniqueSourceName(const std::string &name)
+{
+	std::string newName = name;
+	int suffix = 1;
+
+	for (;;) {
+		OBSSourceAutoRelease existing = obs_get_source_by_name(newName.c_str());
+		if (!existing) {
+			break;
+		}
+
+		newName = name + " " + std::to_string(++suffix);
+	}
+
+	return newName;
+}
+} // namespace
+
+void AutoConfig::AddDisplayCaptureSource()
+{
+	if (!addDisplayCaptureSource || displayCaptureSourceId.empty()) {
+		return;
+	}
+
+	OBSBasic *main = OBSBasic::Get();
+	OBSScene scene = main->GetCurrentScene();
+	if (!scene) {
+		return;
+	}
+
+	OBSDataAutoRelease settings = obs_data_create();
+
+	OBSProperties props = obs_get_source_properties(displayCaptureSourceId.c_str());
+	obs_property_t *monitorProp = obs_properties_first(props);
+
+	if (monitorProp && obs_property_get_type(monitorProp) == OBS_PROPERTY_LIST) {
+		size_t count = obs_property_list_item_count(monitorProp);
+		size_t idx = (displayCaptureMonitorIdx >= 0 && (size_t)displayCaptureMonitorIdx < count)
+				     ? (size_t)displayCaptureMonitorIdx
+				     : 0;
+
+		if (count) {
+			const char *propName = obs_property_name(monitorProp);
+			obs_combo_format format = obs_property_list_format(monitorProp);
+
+			if (format == OBS_COMBO_FORMAT_INT) {
+				obs_data_set_int(settings, propName, obs_property_list_item_int(monitorProp, idx));
+			} else if (format == OBS_COMBO_FORMAT_STRING) {
+				obs_data_set_string(settings, propName,
+						     obs_property_list_item_string(monitorProp, idx));
+			}
+		}
+	}
+
+	const char *displayName = obs_source_get_display_name(displayCaptureSourceId.c_str());
+	std::string sourceName = GetUniqueSourceName(displayName ? displayName : "Display Capture");
+
+	OBSSourceAutoRelease source =
+		obs_source_create(displayCaptureSourceId.c_str(), sourceName.c_str(), settings, nullptr);
+	if (!source) {
+		return;
+	}
+
+	AddDisplayCaptureData data;
+	data.source = source;
+
+	obs_enter_graphics();
+	obs_scene_atomic_update(scene, AddDisplayCaptureSceneItem, &data);
+	obs_leave_graphics();
 }

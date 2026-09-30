@@ -1107,6 +1107,14 @@ void AutoConfigTestPage::FinalizeResults()
 	form->addRow(newLabel("Basic.Settings.Video.ScaledResolution"), new QLabel(scaleRes, ui->finishPage));
 	form->addRow(newLabel("Basic.Settings.Video.FPS"), new QLabel(fpsStr, ui->finishPage));
 
+	if (wiz->addDisplayCaptureSource) {
+		QString sourceDesc = wiz->displayCaptureMonitorName.empty()
+					     ? QTStr("Basic.DisplayCapture")
+					     : QString("%1 - %2").arg(QTStr("Basic.DisplayCapture"),
+									  wiz->displayCaptureMonitorName.c_str());
+		form->addRow(newLabel("Basic.AutoConfig.SourcePage"), new QLabel(sourceDesc, ui->finishPage));
+	}
+
 	// FIXME: form layout is super squished, probably need to set proper sizepolicy on all widgets?
 }
 

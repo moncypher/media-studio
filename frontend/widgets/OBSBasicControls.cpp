@@ -4,10 +4,25 @@
 
 #include "moc_OBSBasicControls.cpp"
 
-OBSBasicControls::OBSBasicControls(OBSBasic *main) : QFrame(nullptr), ui(new Ui::OBSBasicControls)
+#include <cstring>
+
+static const char *StreamKeySettingName(obs_service_t *service)
+{
+	const char *protocol = service ? obs_service_get_protocol(service) : nullptr;
+	if (protocol && strcmp(protocol, "WHIP") == 0)
+		return "bearer_token";
+
+	return "key";
+}
+
+OBSBasicControls::OBSBasicControls(OBSBasic *main) : QFrame(nullptr), ui(new Ui::OBSBasicControls), mainWindow(main)
 {
 	/* Create UI elements */
 	ui->setupUi(this);
+	ui->streamKeyEdit->setClearButtonEnabled(true);
+	streamKeySaveTimer.setSingleShot(true);
+	streamKeySaveTimer.setInterval(400);
+	connect(&streamKeySaveTimer, &QTimer::timeout, this, &OBSBasicControls::ApplyStreamKey);
 
 	streamButtonMenu.reset(new QMenu());
 	startStreamAction = streamButtonMenu->addAction(QTStr("Basic.Main.StartStreaming"));
@@ -45,6 +60,12 @@ OBSBasicControls::OBSBasicControls(OBSBasic *main) : QFrame(nullptr), ui(new Ui:
 	connect(
 		ui->settingsButton, &QPushButton::clicked, this, [this]() { emit this->SettingsButtonClicked(); },
 		Qt::DirectConnection);
+	connect(ui->showStreamKeyButton, &QPushButton::clicked, this, &OBSBasicControls::ToggleStreamKeyVisibility);
+	connect(ui->streamKeyEdit, &QLineEdit::editingFinished, this, &OBSBasicControls::ApplyStreamKey);
+	connect(ui->streamKeyEdit, &QLineEdit::textChanged, this, [this]() {
+		if (!updatingStreamKey)
+			streamKeySaveTimer.start();
+	});
 
 	/* Transfer menu actions signals as OBSBasicControls signals */
 	connect(
@@ -96,10 +117,81 @@ OBSBasicControls::OBSBasicControls(OBSBasic *main) : QFrame(nullptr), ui(new Ui:
 	connect(main, &OBSBasic::BroadcastFlowEnabled, this, &OBSBasicControls::EnableBroadcastFlow);
 	connect(main, &OBSBasic::ReplayBufEnabled, this, &OBSBasicControls::EnableReplayBufferButtons);
 	connect(main, &OBSBasic::VirtualCamEnabled, this, &OBSBasicControls::EnableVirtualCamButtons);
+	connect(main, &OBSBasic::StreamServiceChanged, this, &OBSBasicControls::RefreshStreamKey);
+}
+
+void OBSBasicControls::RefreshStreamKey()
+{
+	if (!mainWindow)
+		return;
+
+	obs_service_t *service = mainWindow->GetService();
+	if (!service)
+		return;
+
+	OBSDataAutoRelease settings = obs_service_get_settings(service);
+	if (!settings)
+		return;
+
+	const QString key = QT_UTF8(obs_data_get_string(settings, StreamKeySettingName(service)));
+	if (ui->streamKeyEdit->text() == key)
+		return;
+
+	updatingStreamKey = true;
+	ui->streamKeyEdit->setText(key);
+	updatingStreamKey = false;
+}
+
+void OBSBasicControls::ToggleStreamKeyVisibility()
+{
+	if (ui->streamKeyEdit->echoMode() == QLineEdit::Password) {
+		ui->streamKeyEdit->setEchoMode(QLineEdit::Normal);
+		ui->showStreamKeyButton->setText(QTStr("Hide"));
+		ui->showStreamKeyButton->setToolTip(QTStr("Hide"));
+	} else {
+		ui->streamKeyEdit->setEchoMode(QLineEdit::Password);
+		ui->showStreamKeyButton->setText(QTStr("Show"));
+		ui->showStreamKeyButton->setToolTip(QTStr("Show"));
+	}
+}
+
+void OBSBasicControls::ApplyStreamKey()
+{
+	streamKeySaveTimer.stop();
+
+	if (!mainWindow || updatingStreamKey)
+		return;
+
+	obs_service_t *service = mainWindow->GetService();
+	if (!service)
+		return;
+
+	OBSDataAutoRelease settings = obs_service_get_settings(service);
+	if (!settings)
+		return;
+
+	const char *field = StreamKeySettingName(service);
+	const QString newKey = ui->streamKeyEdit->text();
+	if (newKey == QT_UTF8(obs_data_get_string(settings, field)))
+		return;
+
+	obs_data_set_string(settings, field, QT_TO_UTF8(newKey));
+	obs_service_update(service, settings);
+	mainWindow->SaveService();
+}
+
+void OBSBasicControls::SetStreamKeyEnabled(bool enabled)
+{
+	ui->streamKeyEdit->setEnabled(enabled);
+	ui->showStreamKeyButton->setEnabled(enabled);
+	ui->streamKeyLabel->setEnabled(enabled);
 }
 
 void OBSBasicControls::StreamingPreparing()
 {
+	ApplyStreamKey();
+	SetStreamKeyEnabled(false);
+
 	ui->streamButton->setEnabled(false);
 	ui->streamButton->setText(QTStr("Basic.Main.PreparingStream"));
 }
@@ -143,6 +235,7 @@ void OBSBasicControls::StreamingStopped(bool withDelay)
 	ui->streamButton->setEnabled(true);
 	setClasses(ui->streamButton, "");
 	ui->streamButton->setText(QTStr("Basic.Main.StartStreaming"));
+	SetStreamKeyEnabled(!withDelay);
 
 	if (withDelay) {
 		if (!ui->streamButton->menu()) {

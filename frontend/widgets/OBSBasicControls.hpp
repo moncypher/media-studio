@@ -5,6 +5,7 @@
 #include <QFrame>
 #include <QPointer>
 #include <QScopedPointer>
+#include <QTimer>
 
 #include <memory>
 
@@ -49,6 +50,10 @@ private slots:
 	void EnableReplayBufferButtons(bool enabled);
 	void EnableVirtualCamButtons();
 
+	void RefreshStreamKey();
+	void ToggleStreamKeyVisibility();
+	void ApplyStreamKey();
+
 public:
 	OBSBasicControls(OBSBasic *main);
 	inline ~OBSBasicControls() {}
@@ -68,4 +73,11 @@ signals:
 	void StartStreamMenuActionClicked();
 	void StopStreamMenuActionClicked();
 	void ForceStopStreamMenuActionClicked();
+
+private:
+	void SetStreamKeyEnabled(bool enabled);
+
+	QPointer<OBSBasic> mainWindow;
+	bool updatingStreamKey = false;
+	QTimer streamKeySaveTimer;
 };
