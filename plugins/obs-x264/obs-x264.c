@@ -99,20 +99,20 @@ static void obs_x264_destroy(void *data)
 
 static void obs_x264_defaults(obs_data_t *settings)
 {
-	obs_data_set_default_int(settings, "bitrate", 6000);
-	obs_data_set_default_bool(settings, "use_bufsize", false);
-	obs_data_set_default_int(settings, "buffer_size", 6000);
-	obs_data_set_default_int(settings, "keyint_sec", 0);
+	obs_data_set_default_int(settings, "bitrate", 5120);
+	obs_data_set_default_bool(settings, "use_bufsize", true);
+	obs_data_set_default_int(settings, "buffer_size", 2560);
+	obs_data_set_default_int(settings, "keyint_sec", 1);
 	obs_data_set_default_int(settings, "crf", 23);
 #ifdef ENABLE_VFR
 	obs_data_set_default_bool(settings, "vfr", false);
 #endif
 	obs_data_set_default_string(settings, "rate_control", "CBR");
 
-	obs_data_set_default_string(settings, "preset", "veryfast");
-	obs_data_set_default_string(settings, "profile", "");
-	obs_data_set_default_string(settings, "tune", "");
-	obs_data_set_default_string(settings, "x264opts", "");
+	obs_data_set_default_string(settings, "preset", "medium");
+	obs_data_set_default_string(settings, "profile", "high");
+	obs_data_set_default_string(settings, "tune", "zerolatency");
+	obs_data_set_default_string(settings, "x264opts", "bframes=0 threads=8");
 	obs_data_set_default_bool(settings, "repeat_headers", false);
 }
 

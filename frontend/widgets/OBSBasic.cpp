@@ -741,7 +741,7 @@ bool OBSBasic::InitBasicConfigDefaults()
 
 	/* ----------------------------------------------------- */
 
-	config_set_default_string(activeConfiguration, "Output", "Mode", "Simple");
+	config_set_default_string(activeConfiguration, "Output", "Mode", "Advanced");
 
 	config_set_default_bool(activeConfiguration, "Stream1", "IgnoreRecommended", false);
 	config_set_default_bool(activeConfiguration, "Stream1", "EnableMultitrackVideo", false);
@@ -1109,7 +1109,7 @@ void OBSBasic::OBSInit()
 	bool sourceIconsVisible = config_get_bool(App()->GetUserConfig(), "BasicWindow", "ShowSourceIcons");
 	ui->toggleSourceIcons->setChecked(sourceIconsVisible);
 
-	bool contextVisible = false;
+	bool contextVisible = config_get_bool(App()->GetUserConfig(), "BasicWindow", "ShowContextToolbars");
 	ui->toggleContextBar->setChecked(contextVisible);
 	ui->contextContainer->setVisible(contextVisible);
 	if (contextVisible) {

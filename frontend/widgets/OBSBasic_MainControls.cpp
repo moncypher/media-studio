@@ -531,7 +531,7 @@ void OBSBasic::on_resetUI_triggered()
 	setPreviewScalingWindow();
 
 	ui->toggleListboxToolbars->setChecked(true);
-	ui->toggleContextBar->setChecked(false);
+	ui->toggleContextBar->setChecked(true);
 	ui->toggleSourceIcons->setChecked(true);
 	ui->toggleStatusBar->setChecked(false);
 	ui->scenes->SetGridMode(false);
