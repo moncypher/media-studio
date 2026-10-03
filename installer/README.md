@@ -1,4 +1,5 @@
 # Media Studio Windows Installer Guide
+# Developer: Mon Aquino
 
 This directory contains the scripts and configuration to build a professional Windows installer for Media Studio.
 
@@ -6,7 +7,16 @@ The setup title, component labels, shortcuts, installation directory, and Window
 uninstall entry use Media Studio. Rebuild the installer after changing branding;
 renaming the executable alone does not update its embedded text.
 
+The installer and uninstaller use the application icon from
+`frontend\cmake\windows\obs-studio.ico`. Rebuild the installer after updating that
+icon to refresh the embedded icons in both executables.
+
 Existing Media Studio installations are not migrated or removed by this installer.
+
+Media Studio disables automatic and manual upstream OBS update checks, hides the
+update settings, and disables upstream repair. Saved update preferences do not
+re-enable the updater. Install newer Media Studio releases using a new Media
+Studio installer instead.
 
 ## ✅ Installation Complete!
 

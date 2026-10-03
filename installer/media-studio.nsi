@@ -14,6 +14,9 @@ InstallDirRegKey HKLM "Software\MediaStudio" "Install_Dir"
 Var StartMenuFolder
 
 ; ===== MUI2 Settings =====
+!define MUI_ICON "..\frontend\cmake\windows\obs-studio.ico"
+!define MUI_UNICON "..\frontend\cmake\windows\obs-studio.ico"
+
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "..\frontend\data\license\gplv2.txt"
 !insertmacro MUI_PAGE_COMPONENTS
