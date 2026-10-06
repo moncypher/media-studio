@@ -7,9 +7,8 @@ The setup title, component labels, shortcuts, installation directory, and Window
 uninstall entry use Media Studio. Rebuild the installer after changing branding;
 renaming the executable alone does not update its embedded text.
 
-The installer and uninstaller use the application icon from
-`frontend\cmake\windows\obs-studio.ico`. Rebuild the installer after updating that
-icon to refresh the embedded icons in both executables.
+The application, updater, installer, and uninstaller use `installer\media.ico`.
+Rebuild the application and installer after updating that icon.
 
 Existing Media Studio installations are not migrated or removed by this installer.
 

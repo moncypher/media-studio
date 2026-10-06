@@ -14,8 +14,8 @@ InstallDirRegKey HKLM "Software\MediaStudio" "Install_Dir"
 Var StartMenuFolder
 
 ; ===== MUI2 Settings =====
-!define MUI_ICON "..\frontend\cmake\windows\obs-studio.ico"
-!define MUI_UNICON "..\frontend\cmake\windows\obs-studio.ico"
+!define MUI_ICON "media.ico"
+!define MUI_UNICON "media.ico"
 
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE "..\frontend\data\license\gplv2.txt"
@@ -39,7 +39,7 @@ CRCCheck on
 VIProductVersion "30.0.0.0"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Media Studio"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Professional Streaming Application"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright @ 2026"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Barebones Inc. Copyright @ 2026"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "30.0.0"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "30.0.0"
 

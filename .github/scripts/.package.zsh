@@ -144,7 +144,9 @@ package() {
 
       mkdir -p obs-studio/.background
       cp ${project_root}/cmake/macos/resources/background.tiff obs-studio/.background/
-      cp ${project_root}/cmake/macos/resources/AppIcon.icns obs-studio/.VolumeIcon.icns
+      ditto "${project_root}/frontend/cmake/macos/Assets.xcassets/AppIcon.appiconset" obs-studio/MediaStudio.iconset
+      iconutil -c icns -o obs-studio/.VolumeIcon.icns obs-studio/MediaStudio.iconset
+      rm -r obs-studio/MediaStudio.iconset
       ln -s /Applications obs-studio/Applications
 
       mkdir -p obs-studio/OBS.app

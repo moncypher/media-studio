@@ -104,9 +104,9 @@ html_theme_options = {
     'collapse_navigation': False
 }
 
-html_logo = 'logo.svg'
+html_logo = '../../installer/media.ico'
 
-html_favicon = 'favicon.ico'
+html_favicon = '../../installer/media.ico'
 
 html_context = {
     "display_github": True, # Integrate GitHub
