@@ -78,8 +78,8 @@
     --black5: #828282;
 
     /* Base Theme Colors */
-    --bg_window: var(--grey7);
-    --bg_base: var(--grey6);
+    --bg_window: #242424;
+    --bg_base: #1B1B1B;
     --bg_preview: var(--grey8);
 
     --primary: var(--blue3);

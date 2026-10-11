@@ -349,6 +349,17 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 
 	ui->setupUi(this);
 
+	ui->listWidget->setRowHidden(Pages::APPEARANCE, true);
+	ui->serviceLabel->hide();
+	ui->serviceWidget->hide();
+	ui->serviceAdvancedOptionsGroupBox->hide();
+	ui->simpleRecordingGroupBox->hide();
+	ui->advOutTabs->removeTab(ui->advOutTabs->indexOf(ui->advOutputRecordTab));
+
+#ifdef _WIN32
+	ui->hideOBSFromCapture->hide();
+#endif
+
 	main->EnableOutputs(false);
 
 	ui->listWidget->setAttribute(Qt::WA_MacShowFocusRect, false);
@@ -5876,7 +5887,7 @@ void OBSBasicSettings::UpdateMultitrackVideo()
 		}
 	}
 
-	ui->multitrackVideoGroupBox->setVisible(available);
+	ui->multitrackVideoGroupBox->setVisible(false);
 
 	ui->enableMultitrackVideo->setEnabled(toggle_available);
 

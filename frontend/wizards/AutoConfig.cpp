@@ -345,7 +345,7 @@ void AutoConfig::SaveSettings()
 
 	const char *quality = recordingQuality == Quality::High ? "Small" : "Stream";
 
-	config_set_string(main->Config(), "Output", "Mode", "Simple");
+	config_set_string(main->Config(), "Output", "Mode", "Advanced");
 	config_set_string(main->Config(), "SimpleOutput", "RecQuality", quality);
 	config_set_int(main->Config(), "Video", "BaseCX", baseResolutionCX);
 	config_set_int(main->Config(), "Video", "BaseCY", baseResolutionCY);

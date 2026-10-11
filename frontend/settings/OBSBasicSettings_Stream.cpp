@@ -649,7 +649,7 @@ void OBSBasicSettings::ServiceChanged(bool resetFields)
 		UpdateMultitrackVideo();
 	}
 
-	ui->useAuth->setVisible(custom);
+	ui->useAuth->setVisible(false);
 	ui->authUsernameLabel->setVisible(custom);
 	ui->authUsername->setVisible(custom);
 	ui->authPwLabel->setVisible(custom);

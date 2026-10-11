@@ -720,6 +720,12 @@ bool OBSBasic::InitBasicConfigDefaults()
 	MigrateFormat("AdvOut");
 	MigrateFormat("SimpleOutput");
 
+	if (!config_has_user_value(activeConfiguration, "Output", "Mode") ||
+	    astrcmpi(config_get_string(activeConfiguration, "Output", "Mode"), "Advanced") != 0) {
+		config_set_string(activeConfiguration, "Output", "Mode", "Advanced");
+		changed = true;
+	}
+
 	/* ----------------------------------------------------- */
 	/* Migrate output scale setting to GPU scaling options.  */
 
