@@ -80,6 +80,7 @@ OBSBasicControls::OBSBasicControls(OBSBasic *main) : QFrame(nullptr), ui(new Ui:
 
 	/* Set up default visibility — simplified controls only */
 	ui->broadcastButton->setVisible(false);
+	ui->recordButton->setVisible(false);
 	ui->pauseRecordButton->setVisible(false);
 	ui->replayBufferButton->setVisible(false);
 	ui->saveReplayButton->setVisible(false);
@@ -273,6 +274,7 @@ void OBSBasicControls::BroadcastStreamStarted(bool autoStop)
 
 void OBSBasicControls::RecordingStarted(bool pausable)
 {
+	ui->recordButton->setVisible(true);
 	setClasses(ui->recordButton, "state-active");
 	ui->recordButton->setText(QTStr("Basic.Main.StopRecording"));
 
@@ -313,6 +315,7 @@ void OBSBasicControls::RecordingStopped()
 {
 	setClasses(ui->recordButton, "");
 	ui->recordButton->setText(QTStr("Basic.Main.StartRecording"));
+	ui->recordButton->setVisible(false);
 
 	ui->pauseRecordButton->setVisible(false);
 }
