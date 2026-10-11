@@ -538,7 +538,7 @@ void OBSBasic::on_resetUI_triggered()
 	ui->toggleListboxToolbars->setChecked(true);
 	ui->toggleContextBar->setChecked(true);
 	ui->toggleSourceIcons->setChecked(true);
-	ui->toggleStatusBar->setChecked(false);
+	ui->toggleStatusBar->setChecked(true);
 	ui->scenes->SetGridMode(false);
 	ui->actionSceneListMode->setChecked(true);
 

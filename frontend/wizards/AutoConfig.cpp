@@ -79,11 +79,12 @@ AutoConfig::AutoConfig(QWidget *parent) : QWizard(parent)
 #endif
 	streamPage = new AutoConfigStreamPage();
 
-	setPage(StartPage, new AutoConfigStartPage());
+	/* setPage(StartPage, new AutoConfigStartPage()); */
 	setPage(SourcePage, new AutoConfigSourcePage());
 	setPage(VideoPage, new AutoConfigVideoPage());
 	setPage(StreamPage, streamPage);
 	setPage(TestPage, new AutoConfigTestPage());
+	setStartId(SourcePage);
 	setWindowTitle(QTStr("Basic.AutoConfig"));
 	setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
@@ -124,51 +125,22 @@ AutoConfig::AutoConfig(QWidget *parent) : QWizard(parent)
 	/* ----------------------------------------- */
 	/* load service/servers                      */
 
-	customServer = serviceType == "rtmp_custom";
+	const bool existingCustomServer = serviceType == "rtmp_custom";
+	customServer = true;
 
 	QComboBox *serviceList = streamPage->ui->service;
 
-	if (!serviceName.empty()) {
-		serviceList->blockSignals(true);
-
-		int count = serviceList->count();
-		bool found = false;
-
-		for (int i = 0; i < count; i++) {
-			QString name = serviceList->itemText(i);
-
-			if (name == serviceName.c_str()) {
-				serviceList->setCurrentIndex(i);
-				found = true;
-				break;
-			}
-		}
-
-		if (!found) {
-			serviceList->insertItem(0, serviceName.c_str());
-			serviceList->setCurrentIndex(0);
-		}
-
-		serviceList->blockSignals(false);
-	}
+	int customServiceIndex = serviceList->findData(QVariant((int)ListOpt::Custom));
+	serviceList->setCurrentIndex(customServiceIndex);
+	streamPage->ui->customServer->setText(QStringLiteral("rtmp://livecolor.barebones.com.ph:1935/app"));
 
 	streamPage->UpdateServerList();
 	streamPage->UpdateKeyLink();
 	streamPage->UpdateMoreInfoLink();
 	streamPage->lastService.clear();
 
-	if (!customServer) {
-		QComboBox *serverList = streamPage->ui->server;
-		int idx = serverList->findData(QString(server.c_str()));
-		if (idx == -1) {
-			idx = 0;
-		}
-
-		serverList->setCurrentIndex(idx);
-	} else {
+	if (existingCustomServer) {
 		streamPage->ui->customServer->setText(server.c_str());
-		int idx = streamPage->ui->service->findData(QVariant((int)ListOpt::Custom));
-		streamPage->ui->service->setCurrentIndex(idx);
 	}
 
 	if (!key.empty()) {

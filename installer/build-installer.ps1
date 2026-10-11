@@ -1,16 +1,16 @@
-# Build NSIS Installer for Media Studio
+# Build NSIS Installer for Boneyard
 # Usage: .\build-installer.ps1 -BinaryPath C:\path\to\build -OutputPath C:\output
 
 param(
     [string]$BinaryPath = "$PSScriptRoot\..\build_x64\rundir\RelWithDebInfo",
     [string]$OutputPath = "$PSScriptRoot\..\build_x64\rundir\RelWithDebInfo",
     [string]$Version = "30.0.0",
-    [string]$InstallerScript = "$PSScriptRoot\media-studio.nsi"
+    [string]$InstallerScript = "$PSScriptRoot\boneyard.nsi"
 )
 
 $ErrorActionPreference = "Continue"
 
-Write-Host "Media Studio Installer Builder" -ForegroundColor Cyan
+Write-Host "Boneyard Installer Builder" -ForegroundColor Cyan
 Write-Host "================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -51,7 +51,7 @@ Write-Host ""
 & $nsisPath "/DVERSION=$Version" "/DOUTPUT_PATH=$OutputPath" "/V4" "$InstallerScript"
 
 if ($LASTEXITCODE -eq 0) {
-    $installerFile = "$OutputPath\Media-Studio-Installer.exe"
+    $installerFile = "$OutputPath\Boneyard-Installer.exe"
     if (Test-Path $installerFile) {
         $fileSize = [Math]::Round((Get-Item $installerFile).Length / 1MB, 2)
         Write-Host ""

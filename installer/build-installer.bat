@@ -1,5 +1,5 @@
 @echo off
-REM Media Studio Installer Builder
+REM Boneyard Installer Builder
 REM Usage: build-installer.bat [version] [output-path]
 
 setlocal enabledelayedexpansion
@@ -11,10 +11,10 @@ set "OUTPUT_PATH=%2"
 if "!OUTPUT_PATH!"=="" set "OUTPUT_PATH=..\build_x64\rundir\RelWithDebInfo"
 
 set "NSIS_PATH=C:\Program Files (x86)\NSIS\makensis.exe"
-set "INSTALLER_SCRIPT=%~dp0media-studio.nsi"
+set "INSTALLER_SCRIPT=%~dp0boneyard.nsi"
 
 echo.
-echo Media Studio Installer Builder
+echo Boneyard Installer Builder
 echo ==============================
 echo.
 
@@ -59,7 +59,7 @@ REM Run NSIS
 if %errorlevel% equ 0 (
     echo.
     echo [SUCCESS] Installer created at:
-    echo   !OUTPUT_PATH!\Media-Studio-Installer.exe
+    echo   !OUTPUT_PATH!\Boneyard-Installer.exe
     echo.
 ) else (
     echo.

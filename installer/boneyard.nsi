@@ -1,15 +1,15 @@
-; Media Studio Windows Installer Script
-; This NSIS script creates an installer for Media Studio (OBS-based streaming application)
+; Boneyard Windows Installer Script
+; This NSIS script creates an installer for Boneyard (OBS-based streaming application)
 
 !include "MUI2.nsh"
 !include "x64.nsh"
 !include "LogicLib.nsh"
 
 ; ===== Basic Settings =====
-Name "Media Studio"
-OutFile "..\build_x64\rundir\RelWithDebInfo\Media-Studio-Installer.exe"
-InstallDir "$PROGRAMFILES64\Media Studio"
-InstallDirRegKey HKLM "Software\MediaStudio" "Install_Dir"
+Name "Boneyard"
+OutFile "..\build_x64\rundir\RelWithDebInfo\Boneyard-Installer.exe"
+InstallDir "$PROGRAMFILES64\Boneyard"
+InstallDirRegKey HKLM "Software\Boneyard" "Install_Dir"
 
 Var StartMenuFolder
 
@@ -37,7 +37,7 @@ CRCCheck on
 
 ; ===== Version Information =====
 VIProductVersion "30.0.0.0"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Media Studio"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "Boneyard"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "Professional Streaming Application"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Barebones Inc. Copyright @ 2026"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "30.0.0"
@@ -46,7 +46,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductVersion" "30.0.0"
 RequestExecutionLevel admin
 
 ; ===== Installer Sections =====
-Section "!Media Studio Core (Required)" SecCore
+Section "!Boneyard Core (Required)" SecCore
     SectionIn RO
 
     ; Copy main application files
@@ -58,11 +58,11 @@ Section "!Media Studio Core (Required)" SecCore
     File /r "..\build_x64\rundir\RelWithDebInfo\obs-plugins\*.*"
 
     ; Store installation folder
-    WriteRegStr HKLM "Software\MediaStudio" "Install_Dir" "$INSTDIR"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MediaStudio" "DisplayName" "Media Studio"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MediaStudio" "DisplayVersion" "30.0.0"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MediaStudio" "UninstallString" '"$INSTDIR\Uninstall.exe"'
-    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MediaStudio" "EstimatedSize" 500000
+    WriteRegStr HKLM "Software\Boneyard" "Install_Dir" "$INSTDIR"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Boneyard" "DisplayName" "Boneyard"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Boneyard" "DisplayVersion" "30.0.0"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Boneyard" "UninstallString" '"$INSTDIR\Uninstall.exe"'
+    WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Boneyard" "EstimatedSize" 500000
 
     ; Create uninstaller
     WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -71,13 +71,13 @@ SectionEnd
 Section "Start Menu Shortcuts" SecStartMenu
     SetOutPath "$INSTDIR\bin\64bit"
     CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-    CreateShortcut "$SMPROGRAMS\$StartMenuFolder\Media Studio.lnk" "$INSTDIR\bin\64bit\obs64.exe"
+    CreateShortcut "$SMPROGRAMS\$StartMenuFolder\Boneyard.lnk" "$INSTDIR\bin\64bit\obs64.exe"
     CreateShortcut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
 SectionEnd
 
 Section "Desktop Shortcut" SecDesktop
     SetOutPath "$INSTDIR\bin\64bit"
-    CreateShortcut "$DESKTOP\Media Studio.lnk" "$INSTDIR\bin\64bit\obs64.exe"
+    CreateShortcut "$DESKTOP\Boneyard.lnk" "$INSTDIR\bin\64bit\obs64.exe"
 SectionEnd
 
 ; ===== Section Descriptions =====
@@ -98,11 +98,11 @@ Section "Uninstall"
 
     ; Remove shortcuts
     RMDir /r "$SMPROGRAMS\$StartMenuFolder"
-    Delete "$DESKTOP\Media Studio.lnk"
+    Delete "$DESKTOP\Boneyard.lnk"
 
     ; Remove registry
-    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\MediaStudio"
-    DeleteRegKey HKLM "Software\MediaStudio"
+    DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Boneyard"
+    DeleteRegKey HKLM "Software\Boneyard"
 SectionEnd
 
 ; ===== Function Callbacks =====
@@ -116,6 +116,6 @@ Function .onInit
 FunctionEnd
 
 Function un.onInit
-    MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to uninstall Media Studio?" /SD IDYES IDYES +2
+    MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to uninstall Boneyard?" /SD IDYES IDYES +2
     Abort
 FunctionEnd

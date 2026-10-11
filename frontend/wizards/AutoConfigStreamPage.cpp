@@ -28,6 +28,8 @@ extern QCef *cef;
 AutoConfigStreamPage::AutoConfigStreamPage(QWidget *parent) : QWizardPage(parent), ui(new Ui_AutoConfigStreamPage)
 {
 	ui->setupUi(this);
+	ui->serviceLabel->hide();
+	ui->serviceWidget->hide();
 	ui->bitrateLabel->setVisible(false);
 	ui->bitrate->setVisible(false);
 	ui->connectAccount2->setVisible(false);

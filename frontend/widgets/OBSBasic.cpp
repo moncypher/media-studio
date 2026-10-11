@@ -1103,7 +1103,8 @@ void OBSBasic::OBSInit()
 	} while (false)
 
 	SET_VISIBILITY("ShowListboxToolbars", toggleListboxToolbars);
-	ui->toggleStatusBar->setChecked(false);
+	ui->toggleStatusBar->setChecked(true);
+	ui->statusbar->setVisible(true);
 #undef SET_VISIBILITY
 
 	bool sourceIconsVisible = config_get_bool(App()->GetUserConfig(), "BasicWindow", "ShowSourceIcons");
@@ -2130,7 +2131,7 @@ void OBSBasic::UpdateTitleBar()
 	const char *profile = config_get_string(App()->GetUserConfig(), "Basic", "Profile");
 	const char *sceneCollection = config_get_string(App()->GetUserConfig(), "Basic", "SceneCollection");
 
-	name << "Media Studio ";
+	name << "Boneyard ";
 	if (safe_mode) {
 		name << " (" << Str("TitleBar.SafeMode") << ")";
 	}

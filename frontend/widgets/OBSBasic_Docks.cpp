@@ -77,8 +77,8 @@ void OBSBasic::ApplySimplifiedUI()
 
 	/* Hide chrome that is not needed for the simplified UI */
 	ui->menubar->setVisible(false);
-	ui->statusbar->setVisible(false);
-	ui->toggleStatusBar->setChecked(false);
+	ui->toggleStatusBar->setChecked(true);
+	ui->statusbar->setVisible(true);
 	ShowContextBar();
 
 	ui->menuBasic_MainMenu_Edit->menuAction()->setVisible(false);
