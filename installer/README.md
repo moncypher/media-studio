@@ -139,7 +139,7 @@ SetOutPath "$INSTDIR\obs-plugins"
 File /r "C:\path\to\your\build\obs-plugins\*.*"
 ```
 
-Shortcuts target `bin\64bit\obs64.exe` and use `bin\64bit` as their
+Shortcuts target `bin\64bit\boneyard64.exe` and use `bin\64bit` as their
 working directory so the application can locate `..\..\data` and its plugins.
 
 ### Add More Languages
@@ -224,19 +224,19 @@ This means the runtime data is missing or installed in the wrong location.
 The installation must include:
 
 ```
-bin\64bit\obs64.exe
+bin\64bit\boneyard64.exe
 data\obs-studio\locale\en-US.ini
 obs-plugins\64bit\
 ```
 
 Rebuild with the corrected `boneyard.nsi` and reinstall. Do not launch an
 old `obs64.exe` left in the installation root by an earlier installer; use
-the updated shortcut or `bin\64bit\obs64.exe`.
+the updated shortcut or `bin\64bit\boneyard64.exe`.
 
 ### Shortcut not working after install
 Verify the executable path in `boneyard.nsi` matches:
 ```
-$INSTDIR\bin\64bit\obs64.exe
+$INSTDIR\bin\64bit\boneyard64.exe
 ```
 
 If your binary is elsewhere, update the shortcut paths (lines 67-68, 72-73).

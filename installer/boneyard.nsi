@@ -71,13 +71,13 @@ SectionEnd
 Section "Start Menu Shortcuts" SecStartMenu
     SetOutPath "$INSTDIR\bin\64bit"
     CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-    CreateShortcut "$SMPROGRAMS\$StartMenuFolder\Boneyard.lnk" "$INSTDIR\bin\64bit\obs64.exe"
+    CreateShortcut "$SMPROGRAMS\$StartMenuFolder\Boneyard.lnk" "$INSTDIR\bin\64bit\boneyard64.exe"
     CreateShortcut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"
 SectionEnd
 
 Section "Desktop Shortcut" SecDesktop
     SetOutPath "$INSTDIR\bin\64bit"
-    CreateShortcut "$DESKTOP\Boneyard.lnk" "$INSTDIR\bin\64bit\obs64.exe"
+    CreateShortcut "$DESKTOP\Boneyard.lnk" "$INSTDIR\bin\64bit\boneyard64.exe"
 SectionEnd
 
 ; ===== Section Descriptions =====

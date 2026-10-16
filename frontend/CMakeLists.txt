@@ -112,4 +112,14 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" PREFIX "Source Files" FILES ${ta
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" PREFIX "Header Files" FILES ${target_hpp_sources})
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" PREFIX "Qt Files" FILES ${target_qt_sources})
 
-set_target_properties_obs(obs-studio PROPERTIES FOLDER frontend OUTPUT_NAME "$<IF:$<PLATFORM_ID:Windows>,obs64,obs>")
+if(WIN32)
+  if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(obs_output_name boneyard64)
+  else()
+    set(obs_output_name boneyard32)
+  endif()
+else()
+  set(obs_output_name obs)
+endif()
+
+set_target_properties_obs(obs-studio PROPERTIES FOLDER frontend OUTPUT_NAME "${obs_output_name}")
