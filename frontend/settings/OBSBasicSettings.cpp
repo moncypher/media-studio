@@ -354,6 +354,7 @@ OBSBasicSettings::OBSBasicSettings(QWidget *parent)
 	ui->serviceWidget->hide();
 	ui->serviceAdvancedOptionsGroupBox->hide();
 	ui->simpleRecordingGroupBox->hide();
+	ui->groupBox_6->hide();
 	ui->advOutTabs->removeTab(ui->advOutTabs->indexOf(ui->advOutputRecordTab));
 
 #ifdef _WIN32
